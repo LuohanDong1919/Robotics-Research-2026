@@ -1,4 +1,4 @@
-\# 机器人学导论：核心理论推导与学习笔记
+机器人学导论：核心理论推导与学习笔记
 
 
 
@@ -10,11 +10,11 @@
 
 
 
-\## 第一部分：机器人构型与运动副基础
+第一部分：机器人构型与运动副基础
 
 
 
-\### 1. 常见机器人构型与工作空间
+1\. 常见机器人构型与工作空间
 
 
 
@@ -22,31 +22,39 @@
 
 
 
-\* \*\*直角坐标型 (PPP)\*\*：三个互相垂直的移动关节。
-
-&#x20; \* \*\*特点\*\*：工作空间为长方体。控制最简单，运动学解算是线性的，但“占地面积”大，空间利用率极低。
+直角坐标型 (PPP)：三个互相垂直的移动关节。
 
 
 
-\* \*\*圆柱坐标型 (RPP)\*\*：一个转动关节 + 两个移动关节。
-
-&#x20; \* \*\*特点\*\*：工作空间为圆柱形空腔，坐标可表示为 $(r, \\theta, z)$。常用于简单的搬运机械。
+特点：工作空间为长方体。控制最简单，运动学解算是线性的，但“占地面积”大，空间利用率极低。
 
 
 
-\* \*\*球坐标型 / 极坐标型 (RRP)\*\*：
-
-&#x20; \* \*\*特点\*\*：工作空间为球壳形。空间位置可表示为 $(r, \\theta, \\phi)$。
+圆柱坐标型 (RPP)：一个转动关节 + 两个移动关节。
 
 
 
-\* \*\*多关节型 (RRR)\*\*：最常见的构型（如 PUMA 560, UR 协作臂及各类重载机械臂）。
-
-&#x20; \* \*\*特点\*\*：全部由转动关节构成。能够进行极其复杂的曲线运动，灵活度最高，空间利用率最大，但正逆运动学解算高度非线性，极易遇到多解和奇异性问题。
+特点：工作空间为圆柱形空腔，坐标可表示为 $(r, \\theta, z)$。常用于简单的搬运机械。
 
 
 
-\### 2. 运动副与关节 (Kinematic Pairs)
+球坐标型 / 极坐标型 (RRP)：
+
+
+
+特点：工作空间为球壳形。空间位置可表示为 $(r, \\theta, \\phi)$。
+
+
+
+多关节型 (RRR)：最常见的构型（如 PUMA 560, UR 协作臂及各类重载机械臂）。
+
+
+
+特点：全部由转动关节构成。能够进行极其复杂的曲线运动，灵活度最高，空间利用率最大，但正逆运动学解算高度非线性，极易遇到多解和奇异性问题。
+
+
+
+2\. 运动副与关节 (Kinematic Pairs)
 
 
 
@@ -54,25 +62,27 @@
 
 
 
-\* \*\*R (转动副, Revolute)\*\*：绕轴线旋转（1自由度）。在 D-H 参数中，关节角 $\\theta\_i$ 为驱动变量。
-
-\* \*\*P (移动副, Prismatic)\*\*：沿轴线平移（1自由度）。在 D-H 参数中，连杆偏距 $d\_i$ 为驱动变量。
+R (转动副, Revolute)：绕轴线旋转（1自由度）。在 D-H 参数中，关节角 $\\theta\_i$ 为驱动变量。
 
 
 
-👇 \*附：常见机器人构型与运动副手绘图\*
+P (移动副, Prismatic)：沿轴线平移（1自由度）。在 D-H 参数中，连杆偏距 $d\_i$ 为驱动变量。
 
 
 
-\## 第二部分：齐次变换矩阵与正逆运动学推导
+👇 附：常见机器人构型与运动副手绘图
 
 
 
-\*(本部分记录了空间位姿转换的核心底稿，是控制指令从笛卡尔空间映射到关节空间的数学基石)\*
+第二部分：齐次变换矩阵与正逆运动学推导
 
 
 
-\### 1. 空间旋转矩阵基础 (Rotation Matrices)
+(本部分记录了空间位姿转换的核心底稿，是控制指令从“笛卡尔空间”映射到“关节空间”的数学基石)
+
+
+
+1\. 空间旋转矩阵基础 (Rotation Matrices)
 
 
 
@@ -84,8 +94,6 @@
 
 
 
-$$
-
 Rot(z, \\theta) = \\begin{bmatrix} 
 
 \\cos\\theta \& -\\sin\\theta \& 0 \\\\ 
@@ -96,15 +104,13 @@ Rot(z, \\theta) = \\begin{bmatrix}
 
 \\end{bmatrix}
 
-$$
+
 
 
 
 绕 X 轴旋转：
 
 
-
-$$
 
 Rot(x, \\theta) = \\begin{bmatrix} 
 
@@ -116,15 +122,13 @@ Rot(x, \\theta) = \\begin{bmatrix}
 
 \\end{bmatrix}
 
-$$
+
 
 
 
 绕 Y 轴旋转（遵循右手定则的轮换对称，注意负号位置）：
 
 
-
-$$
 
 Rot(y, \\theta) = \\begin{bmatrix} 
 
@@ -136,11 +140,11 @@ Rot(y, \\theta) = \\begin{bmatrix}
 
 \\end{bmatrix}
 
-$$
 
 
 
-\### 2. 标准 D-H 参数法 (Denavit-Hartenberg)
+
+2\. 标准 D-H 参数法 (Denavit-Hartenberg)
 
 
 
@@ -148,17 +152,23 @@ $$
 
 
 
-\* \*\*连杆长度\*\* $a\_{i-1}$：沿 $X\_{i-1}$ 轴，从 $Z\_{i-1}$ 移动到 $Z\_i$ 的距离。
-
-\* \*\*连杆扭角\*\* $\\alpha\_{i-1}$：绕 $X\_{i-1}$ 轴，从 $Z\_{i-1}$ 旋转到 $Z\_i$ 的角度。
-
-\* \*\*连杆偏距\*\* $d\_i$：沿 $Z\_i$ 轴，从 $X\_{i-1}$ 移动到 $X\_i$ 的距离。（移动副的变量）
-
-\* \*\*关节角\*\* $\\theta\_i$：绕 $Z\_i$ 轴，从 $X\_{i-1}$ 旋转到 $X\_i$ 的角度。（转动副的变量）
+连杆长度 $a\_{i-1}$：沿 $X\_{i-1}$ 轴，从 $Z\_{i-1}$ 移动到 $Z\_i$ 的距离。
 
 
 
-\### 3. 齐次变换矩阵 (Homogeneous Transformation)
+连杆扭角 $\\alpha\_{i-1}$：绕 $X\_{i-1}$ 轴，从 $Z\_{i-1}$ 旋转到 $Z\_i$ 的角度。
+
+
+
+连杆偏距 $d\_i$：沿 $Z\_i$ 轴，从 $X\_{i-1}$ 移动到 $X\_i$ 的距离。（移动副的变量）
+
+
+
+关节角 $\\theta\_i$：绕 $Z\_i$ 轴，从 $X\_{i-1}$ 旋转到 $X\_i$ 的角度。（转动副的变量）
+
+
+
+3\. 齐次变换矩阵 (Homogeneous Transformation)
 
 
 
@@ -168,19 +178,15 @@ $$
 
 
 
-$$
-
 ^{i-1}T\_i = Trans(X, a\_{i-1}) \\cdot Rot(X, \\alpha\_{i-1}) \\cdot Trans(Z, d\_i) \\cdot Rot(Z, \\theta\_i)
 
-$$
 
 
 
-展开后得到通用的连杆变换矩阵：
+
+展开后得到通用的连杆变换矩阵（此即手推矩阵中大量 $c\_i, s\_i$ 的来源）：
 
 
-
-$$
 
 ^{i-1}T\_i = \\begin{bmatrix} 
 
@@ -194,49 +200,47 @@ $$
 
 \\end{bmatrix}
 
-$$
 
 
 
-\### 4. 正逆运动学 (Forward \& Inverse Kinematics)
+
+4\. 正逆运动学 (Forward \& Inverse Kinematics)
 
 
 
-\* \*\*正运动学 (FK)\*\*：通过已知关节变量 $q$，进行矩阵连乘，求解末端位姿。
+正运动学 (FK)：通过已知关节变量 $q$，进行矩阵连乘，求解末端位姿。
 
 
-
-$$
 
 ^0T\_n = ^0T\_1 \\cdot ^1T\_2 \\dots ^{n-1}T\_n
 
-$$
 
 
 
-\* \*\*逆运动学 (IK)\*\*：已知末端位姿 $^0T\_n$，反解 $q$。
 
-&#x20; \* 解析解法难点：高度非线性，需利用代数法同乘逆矩阵分离变量，或投影至几何平面利用 $\\text{atan2}$ 求解唯一角。
-
-
-
-👇 \*附：齐次矩阵推导与正逆运动学手稿\*
+逆运动学 (IK)：已知末端位姿 $^0T\_n$，反解 $q$。
 
 
 
-\## 第三部分：连杆速度传递与雅可比矩阵
+解析解法难点：高度非线性，需利用代数法同乘逆矩阵分离变量，或投影至几何平面利用 $\\text{atan2}$ 求解唯一角。
 
 
 
-雅可比矩阵是建立 \*\*笛卡尔空间末端速度\*\* 与 \*\*关节空间速度\*\* 的核心映射：
+👇 附：齐次矩阵推导与正逆运动学手稿
 
 
 
-$$
+第三部分：连杆速度传递与雅可比矩阵
+
+
+
+雅可比矩阵是建立 \[关节空间速度] $\\rightarrow$ \[笛卡尔空间末端速度] 的核心映射：
+
+
 
 V = \\begin{bmatrix} v \\\\ \\omega \\end{bmatrix} = J(q) \\cdot \\dot{q}
 
-$$
+
 
 
 
@@ -244,11 +248,11 @@ $$
 
 
 
-\### 方法一：速度递推法 (Velocity Propagation)
+方法一：速度递推法 (Velocity Propagation)
 
 
 
-\*（本部分为 Craig 导论核心：由基座向末端逐个连杆递推）\*
+（本部分为 Craig 导论核心：由基座向末端逐个连杆递推）
 
 
 
@@ -258,47 +262,47 @@ $$
 
 
 
-$$
-
 ^{i+1}\\omega\_{i+1} = ^{i+1}\_i R \\cdot ^i\\omega\_i + \\dot{\\theta}\_{i+1} ^{i+1}Z\_{i+1}
 
-$$
 
 
 
-$$
 
 ^{i+1}v\_{i+1} = ^{i+1}\_i R \\cdot (^iv\_i + ^i\\omega\_i \\times ^iP\_{i+1})
 
-$$
 
 
 
-\* \*\*核心思想\*\*：一直递推到最后一个连杆得到末端速度后，提取出各关节速度的系数，即可拼装成雅可比矩阵。这种方法极具物理直观性。
+
+核心思想：一直递推到最后一个连杆得到 $^nV\_n$ 和 $^n\\omega\_n$ 后，提取出各关节速度 $\\dot{q}$ 的系数，即可拼装成雅可比矩阵。这种方法极具物理直观性。
 
 
 
-👇 \*附：连杆速度传递与雅可比递推手稿\*
+👇 附：连杆速度传递与雅可比递推手稿
 
 
 
-\### 方法二：微分变换与伴随变换矩阵法
+方法二：微分变换与伴随变换矩阵法
 
 
 
-\* \*\*微分运动\*\*：空间微小运动由微分平移 $d$ 和微分旋转 $\\delta$ 组成。
-
-\* \*\*罗德里格斯公式\*\*：处理绕任意轴微小旋转时的核心简化工具，利用泰勒展开线性化。
-
-\* \*\*伴随变换矩阵\*\*：将某坐标系下的微分运动映射到另一坐标系，形成 $6 \\times 6$ 的转换阵。
+微分运动：空间微小运动由微分平移 $d$ 和微分旋转 $\\delta$ 组成：$D = \[d\_x, d\_y, d\_z, \\delta\_x, \\delta\_y, \\delta\_z]^T$。
 
 
 
-👇 \*附：微分算子、罗德里格斯公式及 6x6 伴随变换矩阵手推底稿\*
+罗德里格斯公式：处理绕任意轴微小旋转时的核心简化工具，利用泰勒展开线性化。
 
 
 
-\### 方法三：列向量构造法（矢量叉乘法）
+伴随变换矩阵：将某坐标系下的微分运动映射到另一坐标系，形成 $6 \\times 6$ 的转换阵，其非对角块包含了位置矢量的叉乘算子。
+
+
+
+👇 附：微分算子、罗德里格斯公式及 6x6 伴随变换矩阵手推底稿
+
+
+
+方法三：列向量构造法（矢量叉乘法）
 
 
 
@@ -310,8 +314,6 @@ $$
 
 
 
-$$
-
 J\_i = \\begin{bmatrix} 
 
 Z\_{i-1} \\times (P\_n - P\_{i-1}) \\\\ 
@@ -320,15 +322,13 @@ Z\_{i-1}
 
 \\end{bmatrix}
 
-$$
+
 
 
 
 对于移动副 (P)：(只贡献线速度，不贡献角速度)
 
 
-
-$$
 
 J\_i = \\begin{bmatrix} 
 
@@ -338,35 +338,43 @@ Z\_{i-1} \\\\
 
 \\end{bmatrix}
 
-$$
 
 
 
-\## 第四部分：奇异性与可操作性深度分析 (Part 4: Singularity and Manipulability Analysis)
+
+第四部分：奇异性与可操作性深度分析 (Part 4: Singularity and Manipulability Analysis)
 
 
 
-\### 1. 奇异性 (Singularity)
+1\. 奇异性 (Singularity)
 
 
 
-\* \*\*数学本质 (Mathematical Essence)\*\*：当机械臂处于特定位形，雅可比矩阵降秩，行列式 $\\det(J(q)) = 0$。此时逆矩阵不存在 (The inverse matrix does not exist when the Jacobian matrix loses rank)。
-
-\* \*\*物理灾难 (Physical Consequence)\*\*：在奇异点附近，要产生一个极小的末端笛卡尔速度，可能需要理论上趋于无穷大的关节转速，导致电机过载抱死 (Near singularities, generating a small Cartesian velocity may require infinite joint speeds, causing motor overload)。
-
-\* \*\*分类 (Classification)\*\*：
-
-&#x20; \* \*\*工作空间边界奇异 (Workspace Boundary Singularity)\*\*：机械臂完全伸展，无法继续沿径向运动 (The arm is fully extended and cannot move further radially)。
-
-&#x20; \* \*\*工作空间内部奇异 (Workspace Interior Singularity)\*\*：多轴共线，丧失一个空间自由度 (Multiple axes align, losing one degree of spatial freedom)。
+数学本质 (Mathematical Essence)：当机械臂处于特定位形，雅可比矩阵降秩，行列式 $\\det(J(q)) = 0$。此时逆矩阵不存在 (The inverse matrix does not exist when the Jacobian matrix loses rank)。
 
 
 
-👇 \*附：典型奇异位形分析 (Appendix: Typical Singular Configurations)\*
+物理灾难 (Physical Consequence)：在奇异点附近，要产生一个极小的末端笛卡尔速度，可能需要理论上趋于无穷大的关节转速（$\\dot{q} = J^{-1}V$），导致电机过载抱死 (Near singularities, generating a small Cartesian velocity may require infinite joint speeds, causing motor overload)。
 
 
 
-\### 2. 可操作性度量 (Manipulability Measure)
+分类 (Classification)：
+
+
+
+工作空间边界奇异 (Workspace Boundary Singularity)：机械臂完全伸展，无法继续沿径向运动 (The arm is fully extended and cannot move further radially)。
+
+
+
+工作空间内部奇异 (Workspace Interior Singularity)：多轴共线（如球形手腕处第4、6轴共线），丧失一个空间自由度 (Multiple axes align, losing one degree of spatial freedom)。
+
+
+
+👇 附：典型奇异位形分析 (Appendix: Typical Singular Configurations)
+
+
+
+2\. 可操作性度量 (Manipulability Measure)
 
 
 
@@ -374,29 +382,25 @@ $$
 
 
 
-\* \*\*速度椭球 (Velocity Ellipsoid)\*\*：限制关节空间的单位速度球 $||\\dot{q}||^2 \\le 1$。
+速度椭球 (Velocity Ellipsoid)：限制关节空间的单位速度球 $||\\dot{q}||^2 \\le 1$ (Unit velocity sphere in joint space)。
 
-&#x20; 映射到任务空间后，椭球方程为：
+映射到任务空间后，椭球方程为 (Mapped to task space, the ellipsoid equation is)：
 
 
-
-$$
 
 V^T (J J^T)^{-1} V \\le 1
 
-$$
 
 
 
-\* \*\*Yoshikawa 可操作性度量度 (Yoshikawa's Manipulability Measure)\*\* $w$：
+
+Yoshikawa 可操作性度量度 (Yoshikawa's Manipulability Measure) $w$：
 
 
-
-$$
 
 w = \\sqrt{\\det(J(q) J(q)^T)}
 
-$$
+
 
 
 
@@ -404,15 +408,13 @@ $$
 
 
 
-\## 第五部分：MATLAB 仿真落地与验证计划 (To-Do)
+第五部分：MATLAB 仿真落地与验证计划 (To-Do)
 
 
 
 理论的最终归宿是代码实现。下阶段将使用 Robotics Toolbox 验证上述推导：
 
 
-
-```matlab
 
 % 1. 结合 D-H 参数表构建重载机械臂模型
 
@@ -445,4 +447,6 @@ disp(\['当前雅可比矩阵(平移部分)的行列式为: ', num2str(det\_J)])
 robot.plot(q\_singular);
 
 robot.vellipse(q\_singular);
+
+
 
